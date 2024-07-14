@@ -10,7 +10,7 @@ app = Flask(__name__)
 def home():
     return 'Hello, World!'
 
-@app.route('/about')
+@app.route('/about/')
 def about():
     return 'About'
 
@@ -21,13 +21,13 @@ def send_sms():
         # send sms with whatever is in body
         sms_body = request.get_json()
         load_dotenv()
-        client = vonage.Client(key=os.getenv('VONAGE_API_KEY'), secret=os.getenv('VONAGE_API_SECRET'))
+        client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
         sms = vonage.Sms(client)
 
         responseData = sms.send_message(
             {
-                "from": os.getenv('SYSTEM_NUMBER'),
-                "to": os.getenv('AJIT_NUMBER'),
+                "from": os.environ['SYSTEM_NUMBER'],
+                "to": os.environ['AJIT_NUMBER'],
                 "text": "Hello from the other side.",
             })
 
