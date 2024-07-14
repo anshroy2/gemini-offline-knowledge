@@ -28,7 +28,7 @@ def send_sms():
             {
                 "from": os.environ['SYSTEM_NUMBER'],
                 "to": os.environ['AJIT_NUMBER'],
-                "text": "Hello from the other side.",
+                "text": sms_body.get("text", "Hello from the other side."),
             })
 
         print (responseData)
@@ -37,3 +37,6 @@ def send_sms():
         else:
             print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
     return ('', 204)
+
+if __name__ == "__main__":
+    app.run(debug=True)
