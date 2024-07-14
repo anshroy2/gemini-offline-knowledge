@@ -9,3 +9,27 @@ def home():
 @app.route('/about')
 def about():
     return 'About'
+
+@app.route('/send/', methods=['POST'])
+def send_sms():
+    pprint(request)
+    if request.is_json:
+        # send sms with whatever is in body
+        sms_body = request.get_json()
+        load_dotenv()
+        client = vonage.Client(key=os.getenv('VONAGE_API_KEY'), secret=os.getenv('VONAGE_API_SECRET'))
+        sms = vonage.Sms(client)
+
+        responseData = sms.send_message(
+            {
+                "from": os.getenv('SYSTEM_NUMBER'),
+                "to": os.getenv('AJIT_NUMBER'),
+                "text": "Hello from the other side.",
+            })
+
+        print (responseData)
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully.")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+    return ('', 204)
