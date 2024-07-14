@@ -3,3 +3,4 @@ python-dotenv==0.20.0
 requests==2.22.0
 virtualenv==20.4.2
 vonage==2.5.5
+pprintpp==0.4.0
