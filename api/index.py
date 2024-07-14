@@ -1,7 +1,7 @@
 from flask import Flask, request
 from pprint import pprint
 from dotenv import load_dotenv
-# import os
+import os
 # import vonage
 
 app = Flask(__name__)
