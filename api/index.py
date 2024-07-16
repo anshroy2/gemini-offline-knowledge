@@ -3,7 +3,7 @@ from pprint import pprint
 from dotenv import load_dotenv
 import os
 import sys
-# import vonage
+import vonage
 
 app = Flask(__name__)
 
