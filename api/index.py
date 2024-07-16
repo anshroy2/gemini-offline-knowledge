@@ -2,7 +2,8 @@ from flask import Flask, request
 from pprint import pprint
 from dotenv import load_dotenv
 import os
-import vonage
+import sys
+# import vonage
 
 app = Flask(__name__)
 
@@ -12,7 +13,7 @@ def home():
 
 @app.route('/about/')
 def about():
-    return 'About'
+    return sys.version
 
 # @app.route('/send/', methods=['POST'])
 # def send_sms():
