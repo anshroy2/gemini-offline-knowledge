@@ -13,7 +13,7 @@ def home():
 
 @app.route('/about/')
 def about():
-    return sys.version
+    return 'Python version: ' + sys.version
 
 # @app.route('/send/', methods=['POST'])
 # def send_sms():
