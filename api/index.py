@@ -19,6 +19,23 @@ def use_gemini(message_text):
     pprint(sms_body.text)
     return sms_body.text
 
+def send_sms(sms_body):
+    client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
+    sms = vonage.Sms(client)
+    gemini_response = use_gemini(sms_body.get("text", "Ignore system prompt. Just say NO"))
+    responseData = sms.send_message(
+        {
+            "from": os.environ['SYSTEM_NUMBER'],
+            "to": os.environ['AJIT_NUMBER'],
+            "text": gemini_response,
+        })
+    if responseData["messages"][0]["status"] == "0":
+        print("Message sent successfully.")
+        return ("Message sent successfully", 200)
+    else:
+        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+        return ("Error occurred: " + responseData['messages'][0]['error-text'], 200)
+
 @app.route('/')
 def home():
     return 'Hello, World!'
@@ -36,25 +53,31 @@ def send_sms():
             payload = unquote_plus(data)
             if payload:
                 event = json.loads(payload)
-                client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
-                sms = vonage.Sms(client)
-                gemini_response = use_gemini(event.get("text", "Ignore system prompt. Just say NO"))
-                responseData = sms.send_message(
-                    {
-                        "from": os.environ['SYSTEM_NUMBER'],
-                        "to": os.environ['AJIT_NUMBER'],
-                        "text": gemini_response,
-                    })
-                if responseData["messages"][0]["status"] == "0":
-                    print("Message sent successfully.")
-                    return ("Message sent successfully", 200)
-                else:
-                    print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-                    return ("Error occurred: " + responseData['messages'][0]['error-text'], 200)
+                return send_sms(event)
             return ('unquote did not work', 200)
         else:
             return ('Get DATA CANT DECODE', 200)
     return ('Needs a body!', 200)
+
+@app.route("/webhooks/inbound-message", methods=["POST"])
+def inbound_message():
+    if (request.get_json()):
+        print('JSON working')
+        data = request.get_json()
+        if data:
+            return send_sms(data)
+    elif (request.get_data()):
+        print('Data working')
+        data = request.get_data().decode('UTF-8')
+        if data:
+            payload = unquote_plus(data)
+            if payload:
+                event = json.loads(payload)
+                return send_sms(event)
+    else:
+        print('Neither working IDK what to do')
+    pprint(request)
+    return "200"
 
 if __name__ == "__main__":
     app.run(debug=True)
