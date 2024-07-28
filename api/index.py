@@ -8,6 +8,9 @@ from urllib.parse import unquote_plus
 import json
 import google.generativeai as genai
 
+load_dotenv()
+app = Flask(__name__)
+
 def use_gemini(message_text):
     # Put into Gemini whatever message text comes in
     genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
@@ -15,9 +18,6 @@ def use_gemini(message_text):
     sms_body = model.generate_content(message_text + ' Keep the response to under 150 characters.')
     pprint(sms_body.text)
     return sms_body.text
-
-load_dotenv()
-app = Flask(__name__)
 
 @app.route('/')
 def home():
