@@ -19,7 +19,7 @@ def use_gemini(message_text):
     pprint(sms_body.text)
     return sms_body.text
 
-def send_sms(sms_body):
+def send_sms_helper(sms_body):
     client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
     sms = vonage.Sms(client)
     gemini_response = use_gemini(sms_body.get("text", "Ignore system prompt. Just say NO"))
@@ -53,7 +53,7 @@ def send_sms():
             payload = unquote_plus(data)
             if payload:
                 event = json.loads(payload)
-                return send_sms(event)
+                return send_sms_helper(event)
             return ('unquote did not work', 200)
         else:
             return ('Get DATA CANT DECODE', 200)
@@ -65,7 +65,7 @@ def inbound_message():
         print('JSON working')
         data = request.get_json()
         if data:
-            return send_sms(data)
+            return send_sms_helper(data)
     elif (request.get_data()):
         print('Data working')
         data = request.get_data().decode('UTF-8')
@@ -73,7 +73,7 @@ def inbound_message():
             payload = unquote_plus(data)
             if payload:
                 event = json.loads(payload)
-                return send_sms(event)
+                return send_sms_helper(event)
     else:
         print('Neither working IDK what to do')
     pprint(request)
