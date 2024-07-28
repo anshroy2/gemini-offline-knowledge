@@ -5,3 +5,4 @@ virtualenv==20.4.2
 vonage==3.16.0
 pprintpp==0.4.0
 google==3.0.0
+google-generativeai==0.7.2
