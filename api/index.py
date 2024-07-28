@@ -79,7 +79,12 @@ def send_sms():
 def inbound_message():
     if (request.args):
         print ('Args working' + str(request.args.to_dict()))
-    if (request.is_json):
+        text = request.args['text']
+        if text:
+            print ('Text is working' + text)
+        else:
+            print ('Not able to read text param')
+    elif (request.is_json):
         print('JSON working')
         data = request.get_json()
         if data:
