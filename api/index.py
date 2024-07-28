@@ -19,6 +19,22 @@ def use_gemini(message_text):
     pprint(sms_body.text)
     return sms_body.text
 
+def send_sms_text_exactly(text):
+    client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
+    sms = vonage.Sms(client)
+    responseData = sms.send_message(
+        {
+            "from": os.environ['SYSTEM_NUMBER'],
+            "to": os.environ['AJIT_NUMBER'],
+            "text": text,
+        })
+    if responseData["messages"][0]["status"] == "0":
+        print("Message sent successfully.")
+        return ("Message sent successfully", 200)
+    else:
+        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+        return ("Error occurred: " + responseData['messages'][0]['error-text'], 200)
+
 def send_sms_helper(sms_body):
     client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
     sms = vonage.Sms(client)
@@ -61,7 +77,7 @@ def send_sms():
 
 @app.route("/webhooks/inbound-message", methods=["POST", "GET"])
 def inbound_message():
-    return (str(request.content_type), 200)
+    return send_sms_text_exactly(str(request.content_type), 200)
     if (request.get_json()):
         print('JSON working')
         data = request.get_json()
