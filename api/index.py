@@ -15,6 +15,17 @@ def home():
 def about():
     return 'Python version: ' + sys.version
 
+
+@app.route('/desbug', methods=['POST'])
+def example_post_debug():
+    print(request)
+    if request.get_data():
+        return ('Get DATA', 200)
+    elif request.get_json():
+        return ('Get JSON', 200)
+    else:
+        return ('Neither of those', 200)
+
 @app.route('/send/', methods=['POST'])
 def send_sms():
     pprint(request)
