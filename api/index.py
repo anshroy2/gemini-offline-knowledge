@@ -13,8 +13,8 @@ def use_gemini(message_text):
     genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
     model = genai.GenerativeModel('gemini-1.5-flash')
     sms_body = model.generate_content(message_text + ' Keep the response to under 150 characters.')
-    pprint(sms_body)
-    return sms_body
+    pprint(sms_body.text)
+    return sms_body.text
 
 load_dotenv()
 app = Flask(__name__)
