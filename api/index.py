@@ -20,7 +20,10 @@ def about():
 def example_post_debug():
     print(request)
     if request.get_data():
-        return ('Get DATA', 200)
+        if request.get_data().decode('UTF-8'):
+            return ('Get DATA decoded', 200)
+        else:
+            return ('Get DATA CANT DECODE', 200)
     elif request.get_json():
         return ('Get JSON', 200)
     else:
