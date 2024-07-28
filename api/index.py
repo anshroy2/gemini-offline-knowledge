@@ -18,27 +18,6 @@ def home():
 def about():
     return 'Python version: ' + sys.version
 
-
-@app.route('/desbug', methods=['POST'])
-def example_post_debug():
-    print(request)
-    if request.get_data():
-        data = request.get_data().decode('UTF-8')
-        if data:
-            payload = unquote_plus(data)
-            if payload:
-                event = json.loads(payload)
-                if event['text']:
-                    return (event['text'], 200)
-                return ('text cannot be accessed', 422)
-            return ('unquote did not work', 422)
-        else:
-            return ('Get DATA CANT DECODE', 422)
-    elif request.get_json():
-        return ('Get JSON', 200)
-    else:
-        return ('Neither of those', 423)
-
 @app.route('/send/', methods=['POST'])
 def send_sms():
     pprint(request)
@@ -50,14 +29,14 @@ def send_sms():
                 event = json.loads(payload)
                 client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
                 sms = vonage.Sms(client)
-                #return ('Vonage loaded successfully', 200)
                 responseData = sms.send_message(
                     {
                         "from": os.environ['SYSTEM_NUMBER'],
                         "to": os.environ['AJIT_NUMBER'],
                         "text": event.get("text", "Default body Text Sent!"),
                     })
-                if responseData["messages"]["0"]["status"] == "0":
+                return (str(responseData["messages"][0]["status"] == "0"), 200)
+                if responseData["messages"][0]["status"] == "0":
                     print("Message sent successfully.")
                     return ("Message sent successfully", 200)
                 else:
