@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import sys
 import vonage
+from urllib.parse import unquote_plus
 
 app = Flask(__name__)
 
@@ -20,8 +21,11 @@ def about():
 def example_post_debug():
     print(request)
     if request.get_data():
-        if request.get_data().decode('UTF-8'):
-            return ('Get DATA decoded', 200)
+        data = request.get_data().decode('UTF-8')
+        if data:
+            payload = unquote_plus(data)
+            str_payload = str(payload)
+            return (str_payload, 200)
         else:
             return ('Get DATA CANT DECODE', 200)
     elif request.get_json():
