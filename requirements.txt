@@ -1,6 +1,6 @@
 Flask==3.0.3
 python-dotenv==0.20.0
-requests==2.22.0
+requests==2.32.3
 virtualenv==20.4.2
 vonage==3.16.0
 pprintpp==0.4.0
