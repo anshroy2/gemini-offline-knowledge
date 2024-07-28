@@ -59,7 +59,7 @@ def send_sms():
             return ('Get DATA CANT DECODE', 200)
     return ('Needs a body!', 200)
 
-@app.route("/webhooks/inbound-message", methods=["POST"])
+@app.route("/webhooks/inbound-message", methods=["POST", "GET"])
 def inbound_message():
     if (request.get_json()):
         print('JSON working')
