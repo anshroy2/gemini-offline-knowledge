@@ -35,7 +35,6 @@ def send_sms():
                         "to": os.environ['AJIT_NUMBER'],
                         "text": event.get("text", "Default body Text Sent!"),
                     })
-                return (str(responseData["messages"][0]["status"] == "0"), 200)
                 if responseData["messages"][0]["status"] == "0":
                     print("Message sent successfully.")
                     return ("Message sent successfully", 200)
