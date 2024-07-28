@@ -60,13 +60,14 @@ def send_sms():
                 print (responseData)
                 if responseData["messages"][0]["status"] == "0":
                     print("Message sent successfully.")
+                    return ("Message sent successfully", 200)
                 else:
                     print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-                return ('Text cannot be accessed', 422)
-            return ('unquote did not work', 422)
+                    return ("Error occurred: " + responseData['messages'][0]['error-text'], 200)
+            return ('unquote did not work', 200)
         else:
-            return ('Get DATA CANT DECODE', 422)
-    return ('Needs a body!', 422)
+            return ('Get DATA CANT DECODE', 200)
+    return ('Needs a body!', 200)
 
 if __name__ == "__main__":
     app.run(debug=True)
