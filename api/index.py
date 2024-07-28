@@ -77,8 +77,13 @@ def send_sms():
 
 @app.route("/webhooks/inbound-message", methods=["POST", "GET"])
 def inbound_message():
-    return send_sms_text_exactly(str(request.content_type))
-    if (request.get_json()):
+    if (request.args):
+        print ('Request is getting args' + request.args)
+    else:
+        print (request.content_type)
+    return ('', 200)
+    
+    if (request.is_json):
         print('JSON working')
         data = request.get_json()
         if data:
