@@ -50,13 +50,14 @@ def send_sms():
                 event = json.loads(payload)
                 client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
                 sms = vonage.Sms(client)
+                return ('Vonage loaded successfully', 200)
                 responseData = sms.send_message(
                     {
                         "from": os.environ['SYSTEM_NUMBER'],
                         "to": os.environ['AJIT_NUMBER'],
                         "text": event.get("text", "Default body Text Sent!"),
                     })
-
+                #return ('Sent message loaded', 200)
                 print (responseData)
                 if responseData["messages"][0]["status"] == "0":
                     print("Message sent successfully.")
