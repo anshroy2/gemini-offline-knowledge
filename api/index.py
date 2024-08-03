@@ -20,13 +20,16 @@ def use_gemini(message_text):
     return sms_body.text
 
 def send_sms_helper(sms_body):
+    number_to_send = os.environ['AJIT_NUMBER']
+    if sms_body.get('msisdn'):
+        number_to_send = sms_body.get('msisdn')
     client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])
     sms = vonage.Sms(client)
     gemini_response = use_gemini(sms_body.get("text", "Ignore system prompt. Just say NO"))
     responseData = sms.send_message(
         {
             "from": os.environ['SYSTEM_NUMBER'],
-            "to": os.environ['AJIT_NUMBER'],
+            "to": number_to_send,
             "text": gemini_response,
         })
     if responseData["messages"][0]["status"] == "0":
