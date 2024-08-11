@@ -1,28 +1,98 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+# Flask SMS Gemini Integration
 
-# Flask + Vercel
+This repository contains a Flask web application that integrates with the Vonage SMS API and Google Gemini to handle incoming SMS messages and respond with AI-generated content.
 
-This example shows how to use Flask 3 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+## Features
 
-## Demo
+- **Flask Web Server**: A simple Flask application to handle HTTP requests.
+- **Vonage SMS API Integration**: Send SMS messages using Vonage.
+- **Google Gemini Integration**: Utilize Google Gemini to generate AI-based SMS responses.
+- **Environment Variables**: Sensitive information like API keys and phone numbers are managed via environment variables.
 
-https://flask-python-template.vercel.app/
+## Prerequisites
 
-## How it Works
+Ensure you have the following installed:
 
-This example uses the Web Server Gateway Interface (WSGI) with Flask to enable handling requests on Vercel with Serverless Functions.
+- Python 3.7+
+- `pip` package manager
+- Vonage and Google Gemini accounts with API access
 
-## Running Locally
+## Installation
 
-```bash
-npm i -g vercel
-vercel dev
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/your-username/flask-sms-gemini.git
+   cd flask-sms-gemini
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set up environment variables:**
+
+   Create a `.env` file in the project root with the following variables:
+
+   ```plaintext
+   GEMINI_API_KEY=your_gemini_api_key
+   VONAGE_API_KEY=your_vonage_api_key
+   VONAGE_API_SECRET=your_vonage_api_secret
+   SYSTEM_NUMBER=your_system_phone_number
+   AJIT_NUMBER=default_phone_number_for_ajit
+   ```
+
+4. **Run the Flask app:**
+
+   ```bash
+   python app.py
+   ```
+
+## API Endpoints
+
+### `GET /`
+Returns a simple "Hello, World!" message.
+
+### `GET /about/`
+Returns the Python version running the app.
+
+### `POST /send/`
+Processes and sends an SMS message. The body of the request should include a JSON payload with the following format:
+
+```json
+{
+  "msisdn": "recipient_phone_number",
+  "text": "message_text"
+}
 ```
 
-Your Flask application is now available at `http://localhost:3000`.
+### `POST /webhooks/inbound-message`
+Handles inbound messages from Vonage. It supports different formats:
+- URL-encoded parameters
+- JSON payloads
 
-## One-Click Deploy
+## Usage
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+1. **Send SMS Message:**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+   Use the `/send/` endpoint with a POST request to send a message. The text will be processed by Google Gemini, and a response will be sent back to the specified phone number.
+
+2. **Handle Inbound SMS:**
+
+   The application can process inbound SMS messages via the `/webhooks/inbound-message` endpoint.
+
+## Debugging
+
+Run the Flask application in debug mode by setting `debug=True` in `app.run()` within the `if __name__ == "__main__":` block.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- **Flask**: Micro web framework for Python.
+- **Vonage**: API provider for SMS and communication services.
+- **Google Gemini**: AI platform for generating content.
