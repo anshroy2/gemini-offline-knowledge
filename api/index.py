@@ -20,7 +20,7 @@ def use_gemini(message_text):
     return sms_body.text
 
 def send_sms_helper(sms_body):
-    number_to_send = os.environ['AJIT_NUMBER']
+    number_to_send = os.environ['USER_NUMBER']
     if sms_body.get('msisdn'):
         number_to_send = sms_body.get('msisdn')
     client = vonage.Client(key=os.environ['VONAGE_API_KEY'], secret=os.environ['VONAGE_API_SECRET'])

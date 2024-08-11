@@ -22,7 +22,7 @@ Ensure you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/flask-sms-gemini.git
+   git clone https://github.com/anshroy2/gemini-offline-knowledge.git
    cd flask-sms-gemini
    ```
 
@@ -41,7 +41,7 @@ Ensure you have the following installed:
    VONAGE_API_KEY=your_vonage_api_key
    VONAGE_API_SECRET=your_vonage_api_secret
    SYSTEM_NUMBER=your_system_phone_number
-   AJIT_NUMBER=default_phone_number_for_ajit
+   USER_NUMBER=default_phone_number_for_ajit
    ```
 
 4. **Run the Flask app:**
